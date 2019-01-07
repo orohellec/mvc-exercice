@@ -26,10 +26,35 @@ RSpec.describe Item, type: :model do
   end
 
   describe 'Price' do
-    context 'when the item has a discount' do
+    context 'when the item has a discount (price = 100, discount = 20)' do
       let(:item) { build(:item_with_discount, original_price: 100.00, discount_percentage: 20) }
-
       it { expect(item.price).to eq(80.00) }
+    end
+    context 'when the item has a discount (price = 60, discount = 30)' do
+      let(:item) { build(:item_with_discount, original_price: 60.00, discount_percentage: 30) }
+      it { expect(item.price).to eq(42.00) }
+    end
+    context 'when the item has a discount (price = 54.5176, discount = 30)' do
+      let(:item) { build(:item_with_discount, original_price: 54.5176, discount_percentage: 30) }
+      it { expect(item.price).to eq(38.16232) }
+    end
+    context 'when the item do not have discount (price = 53)' do
+      let(:item) { build(:item_without_discount, original_price: 53.00) }
+      it { expect(item.price).to eq(53.00) }
+    end
+    context 'when the item do not have discount (price = 73.56)' do
+      let(:item) { build(:item_without_discount, original_price: 73.56) }
+      it { expect(item.price).to eq(73.56) }
+    end
+  end
+
+  describe 'Price average' do
+    context 'test if the average price is correct' do
+      let(:item) { create(:item_with_discount, original_price: 100.00, discount_percentage: 20) }
+      let(:item) { create(:item_with_discount, original_price: 60.00, discount_percentage: 30) }
+      let(:item) { create(:item_without_discount, original_price: 53.00) }
+      puts Item.all
+      it { expect(Item.average_price).to eq(71.00) }
     end
   end
 end

@@ -14,6 +14,20 @@
 
 class Item < ApplicationRecord
   def price
-    80.00
+    if self.has_discount
+      return (self.original_price * (100 - self.discount_percentage) / 100)
+    else
+      return self.original_price
+    end
+  end
+
+  def self.average_price
+    total = 0
+    all_items = self.all
+    all_items.each do |item|
+      total += item.price
+    end
+    average = (total / all_items.size)
+    return average
   end
 end
