@@ -28,6 +28,15 @@ class Item < ApplicationRecord
       total += item.price
     end
     average = (total / all_items.size)
-    return average
+  end
+
+  def update_promo(discount)
+    if discount.to_i > 0 && discount.to_i <= 100
+      self.update(discount_percentage: discount, has_discount: true)
+    elsif discount.to_i == 0
+      self.update(discount_percentage: discount, has_discount: false)
+    else
+      puts "between 0 to 100 please"
+    end
   end
 end

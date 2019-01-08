@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   namespace 'administration' do
     get '/', to: 'items#index'
-
+    post '/', to: 'items#update'
     resources :items
   end
 end
