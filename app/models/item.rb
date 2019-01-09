@@ -13,6 +13,9 @@
 #
 
 class Item < ApplicationRecord
+  has_many :category_item_connections, inverse_of: :item
+  has_many :categories, through: :category_item_connections
+
   def price
     if self.has_discount
       return (self.original_price * (100 - self.discount_percentage) / 100)
