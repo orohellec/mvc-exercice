@@ -4,7 +4,6 @@ module Administration
   class ItemsController < AdministrationController
     def index
       @items = Item.all
-      puts params
     end
 
     def update

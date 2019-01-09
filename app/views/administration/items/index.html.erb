@@ -12,6 +12,7 @@
 							<thead>
 								<tr>
 									<th></th>
+									<th>Nom</th>
 									<th>Prix de départ</th>
 									<th>Pourcentage de remise</th>
 									<th>Prix</th>
@@ -22,10 +23,10 @@
 							<tbody>
 								<% i = 1 %>
 								<%	@items.order(:id).each do |item| %>
-
 								<tr>
 									<th scope="row"><%= i %></th>
 									<%= form_with url: "/administration/items/#{item.id}", local: true, method: :patch do |f| %>
+									<td><%= item.name %></td>
 									<td><%= item.original_price %></td>
 									<td><%= f.text_field :discount_percentage, value: item.discount_percentage %></td>
 									<td><%= item.price.round(2) %></td>
