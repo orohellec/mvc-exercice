@@ -16,11 +16,16 @@ class Item < ApplicationRecord
   has_many :category_item_connections, inverse_of: :item
   has_many :categories, through: :category_item_connections
 
+  validates_presence_of :name
+  validates_numericality_of :discount_percentage, only_integer: true,
+                                                  less_than_or_equal_to: 100,
+                                                  greater_than_or_equal_to: 0
+
   def price
     if self.has_discount
-      return (self.original_price * (100 - self.discount_percentage) / 100)
+      (self.original_price * (100 - self.discount_percentage) / 100)
     else
-      return self.original_price
+      self.original_price
     end
   end
 
@@ -36,10 +41,9 @@ class Item < ApplicationRecord
   def update_promo(discount)
     if discount.to_i > 0 && discount.to_i <= 100
       self.update(discount_percentage: discount, has_discount: true)
-    elsif discount.to_i == 0
+    end
+    if discount.to_i == 0
       self.update(discount_percentage: discount, has_discount: false)
-    else
-      puts "between 0 to 100 please"
     end
   end
 end

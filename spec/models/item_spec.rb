@@ -20,9 +20,17 @@ RSpec.describe Item, type: :model do
 
     describe 'Database' do
       it { is_expected.to have_db_column(:id).of_type(:integer) }
+      it { is_expected.to have_db_column(:name).of_type(:string) }
       it { is_expected.to have_db_column(:original_price).of_type(:float).with_options(null: false) }
+      it { is_expected.to have_db_column(:has_discount).of_type(:boolean).with_options(default: false) }
+      it { is_expected.to have_db_column(:discount_percentage).of_type(:integer).with_options(default: 0) }
       it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     end
+
+      describe 'Validations' do
+        it { is_expected.to validate_presence_of(:name) }
+        it { is_expected.to validate_numericality_of(:discount_percentage).only_integer.is_greater_than_or_equal_to(0).is_less_than_or_equal_to(100) }
+      end
   end
 
   describe 'Price' do
@@ -47,14 +55,14 @@ RSpec.describe Item, type: :model do
       it { expect(item.price).to eq(73.56) }
     end
   end
-=begin "this test doesn't work yet"
+
   describe 'Price average' do
     context 'test if the average price is correct' do
-      let(:item) { create(:item_with_discount, original_price: 100.00, discount_percentage: 20) }
-      let(:item) { create(:item_with_discount, original_price: 60.00, discount_percentage: 30) }
-      let(:item) { create(:item_without_discount, original_price: 53.00) }
-      it { expect(Item.all.average_price).to eq(71.00) }
+      Item.delete_all
+      Item.create!(name: "test", original_price: 100.00, discount_percentage: 20, has_discount: true)
+      Item.create!(name: "test2", original_price: 60.00, discount_percentage: 30, has_discount: true)
+      Item.create!(name: "test3", original_price: 53.00)
+      it { expect(Item.average_price.round(2)).to eq(58.33) }
     end
   end
-=end
 end
