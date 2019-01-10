@@ -1,5 +1,16 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: categories
+#
+#  id          :bigint(8)        not null, primary key
+#  name        :string           not null
+#  description :text
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 require 'rails_helper'
 
 RSpec.describe Category, type: :model do
@@ -12,6 +23,8 @@ RSpec.describe Category, type: :model do
     end
 
     describe 'validations' do
+      Category.delete_all
+      Category.create!(name: "lola", description: "du bon chocolat")
       it { is_expected.to validate_uniqueness_of(:name) }
     end
 

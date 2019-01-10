@@ -10,10 +10,11 @@
 #  discount_percentage :integer          default(0)
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  name                :string
 #
 
 class Item < ApplicationRecord
-  has_many :category_item_connections, dependant: :destroy, inverse_of: :item
+  has_many :category_item_connections, dependent: :destroy, inverse_of: :item
   has_many :categories, through: :category_item_connections
 
   validates :name, presence: true, uniqueness: true
