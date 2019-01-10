@@ -13,37 +13,35 @@
 #
 
 class Item < ApplicationRecord
-  has_many :category_item_connections, inverse_of: :item
+  has_many :category_item_connections, dependant: :destroy, inverse_of: :item
   has_many :categories, through: :category_item_connections
 
-  validates_presence_of :name
-  validates_numericality_of :discount_percentage, only_integer: true,
+  validates :name, presence: true, uniqueness: true
+  validates :discount_percentage, numericality: { only_integer: true,
                                                   less_than_or_equal_to: 100,
-                                                  greater_than_or_equal_to: 0
+                                                  greater_than_or_equal_to: 0 }
 
   def price
-    if self.has_discount
-      (self.original_price * (100 - self.discount_percentage) / 100)
+    if has_discount == true
+      (original_price * (100 - discount_percentage) / 100)
     else
-      self.original_price
+      original_price
     end
   end
 
   def self.average_price
     total = 0
-    all_items = self.all
-    all_items.each do |item|
+    all.find_each do |item|
       total += item.price
     end
-    average = (total / all_items.size)
+    (total / all.size)
   end
 
   def update_promo(discount)
-    if discount.to_i > 0 && discount.to_i <= 100
-      self.update(discount_percentage: discount, has_discount: true)
-    end
-    if discount.to_i == 0
-      self.update(discount_percentage: discount, has_discount: false)
+    if discount.to_i.positive? && discount.to_i <= 100
+      update(discount_percentage: discount, has_discount: true)
+    else # negative number and other type than integer are managed by validates in model
+      update(discount_percentage: discount, has_discount: false)
     end
   end
 end

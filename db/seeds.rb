@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 1.upto(5) do |i|
   Category.create!(
     name: Faker::Commerce.department,
