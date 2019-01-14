@@ -31,7 +31,7 @@
 									<td><%= f.text_field :discount_percentage, value: item.discount_percentage %></td>
 									<td><%= item.price.round(2) %></td>
 									<td><%= f.hidden_field :item_id, value: item.id %></td>
-									<td><%= f.submit "Modifier" %></td>
+									<td><%= f.submit "Modifier", class: "btn btn-primary" %></td>
 									<% end %>
 								</tr>
 								<% i += 1 %>
