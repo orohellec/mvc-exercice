@@ -11,8 +11,6 @@ AllCops:
     - 'vendor/**/*'
     - 'config/environments/*.rb'
     - 'bin/*'
-    - 'app/controllers/admins/*'
-    - 'app/controllers/users/*'
 
 Rails:
   Enabled: true
@@ -31,3 +29,8 @@ Metrics/BlockLength:
     - 'spec/**/*.rb'
     - 'Guardfile'
     - 'vendor/bundle'
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'app/controllers/admins/*'
+    - 'app/controllers/users/*'
