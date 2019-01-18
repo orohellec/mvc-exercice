@@ -35,9 +35,18 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = {
-        :address => "localhost",
-        :port => 1030
+      :user_name => ENV['SENDGRIND_USERNAME'],
+      :password => ENV['SENDGRIND_PASSWORD'],
+      :domain => 'heroku.com',
+      :address => 'smtp.sendgrid.net',
+      :port => 587,
+      :authentication => :plain,
+      :enable_starttls_auto => true
     }
+#  config.action_mailer.smtp_settings = {
+#     :address => "localhost",
+#     :port => 1030
+# }
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
